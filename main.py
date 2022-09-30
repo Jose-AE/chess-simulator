@@ -1,6 +1,6 @@
-#
 import pygame
 import random
+import generator
 
 pygame.init()
 screen = pygame.display.set_mode((600,800))
@@ -40,22 +40,16 @@ def DrawPiece(piece, x, y):
     screen.blit(font.render(piece, True, "Red"),(x*50+100 +5, y*50+100 -5))
 
 
+game_info = None
+
 def NewGame():
-    global queen_pos
-    global king_pos
-    global extra_pos
-
-
-    queen_pos = (random.randrange(8),random.randrange(8))
-    queen_pos = (random.randrange(8),random.randrange(8))
-    queen_pos = (random.randrange(8),random.randrange(8))
-
+    global game_info
+    game_info = generator.generateGame()
     
-queen_pos = [0,0]
-king_pos = [0,0]
-extra_pos = [0,0]
+    
+    
+    
 NewGame()
-
 
 while True:
 
@@ -73,12 +67,8 @@ while True:
 
     
     
-    
-
-
     DrawBoard()
-    DrawPiece("♔",queen_pos[0],queen_pos[1])
-    
+    DrawPiece("♛", game_info["qpx"],game_info["qpx"])
     
 
     pygame.display.update() 
