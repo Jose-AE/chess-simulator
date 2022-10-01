@@ -1,4 +1,6 @@
+
 import random
+
 
 
 chess_coordinates = (
@@ -12,7 +14,13 @@ chess_coordinates = (
     ("A1","B1","C1","D1","E1","F1","G1","H1")
 )
 
+en_jaque = False
+
 def generateGame():
+
+    global en_jaque 
+
+    en_jaque = False
 
     #generate random positions for the 3 peices without repeating same coords 
     rng_pos = []
@@ -50,7 +58,7 @@ def generateGame():
             positions.append( {"x":queen_pos["x"],"y":y,"Cell":chess_coordinates[y][queen_pos["x"]] }  ) 
             #check king and extra collision  
             if cur_pos == (king_pos["x"],king_pos["y"]) or cur_pos == (extra_pos["x"],extra_pos["y"] ):
-                    break
+                break
 
         #check bottom
         for y in range(queen_pos["y"]+1,8):
@@ -59,7 +67,7 @@ def generateGame():
             positions.append( {"x":queen_pos["x"],"y":y,"Cell":chess_coordinates[y][queen_pos["x"]] }  ) 
             #check king and extra collision 
             if cur_pos == (king_pos["x"],king_pos["y"]) or cur_pos == (extra_pos["x"],extra_pos["y"] ):
-                    break
+                break
 
         #check right
         for x in range(queen_pos["x"]+1,8):
@@ -126,6 +134,41 @@ def generateGame():
 
         return positions
 
+    def calculateKingPositions():
+        
+        positions = []
+        
+        #get queen positions 
+        queen_positions = [pos["Cell"] for pos in calculateQueenPositions() ]
+
+        #check if king is in jaque 
+        global en_jaque
+        if chess_coordinates[king_pos["y"]][king_pos["x"]] in queen_positions:
+            en_jaque = True
+
+        
+        for row in range(-1,2):
+            for col in range(-1,2):
+                x = row + king_pos["x"]
+                y = col + king_pos["y"]
+
+                if (x,y) == (king_pos["x"],king_pos["y"]): 
+                    continue
+                
+                if (x>7 or x<0) or (y>7 or y<0):
+                    continue
+                
+                #if were to move to queen pos: dont
+                cur_cell = chess_coordinates[y][x]
+                if cur_cell in queen_positions:
+                    continue
+
+
+                positions.append( {"x":x,"y":y,"Cell":cur_cell }  ) 
+                
+
+        return positions
+        
 
 
     return {
@@ -139,8 +182,9 @@ def generateGame():
         "epy":extra_pos["y"],
         "e_cell":chess_coordinates[extra_pos['y']][extra_pos["x"]],
         "queen_moves": calculateQueenPositions(),
-        "king_moves": calculateQueenPositions(),
-        "extra_moves": calculateQueenPositions(),
+        "king_moves": calculateKingPositions(),
+        "extra_moves": calculateKingPositions(),
+        "en_jaque": en_jaque
         }
 
 

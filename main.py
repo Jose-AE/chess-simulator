@@ -11,7 +11,7 @@ font = pygame.font.SysFont("segoeuisymbol", 40)
 font_moves = pygame.font.SysFont("segoeuisymbol", 10)
 
 
-def DrawBoard():
+def drawBoard():
     i = 0
     for x in range(8):
         for y in range(8):
@@ -33,48 +33,68 @@ def DrawBoard():
     for y in range(8):
         screen.blit(font.render(letters[y], True, "Black"),(y*50+100+10, 40))
         screen.blit(font.render(letters[y], True, "Black"),(y*50+100+10, 500))
+
+
+    #info box
+    pygame.draw.rect(screen, "White", pygame.Rect(0, 550, 600, 300))
        
     
-
-def DrawPiece(piece, x, y, color):
-    
-
+def drawMoves():
     #draw moves 
-    screen.blit(font.render(piece, True, color),(x*50+100 +5, y*50+100 -5))
 
-    if piece == "♛":
-        for move in game_info["queen_moves"]:
-            pygame.draw.circle(screen, color, (move["x"]*50 +125, move["y"]*50 +125), 10)
+    for move in game_info["queen_moves"]:
+        pygame.draw.circle(screen, "Red", (move["x"]*50 +125, move["y"]*50 +125), 10)
+    
+    for move in game_info["king_moves"]:
+        pygame.draw.circle(screen, "Blue", (move["x"]*50 +125, move["y"]*50 +125), 8)
+    
+    for move in game_info["extra_moves"]:
+        pygame.draw.circle(screen, "Blue", (move["x"]*50 +125, move["y"]*50 +125), 8)
+
+
+
+def drawPieces():
+    
+    #draw queen
+    screen.blit(font.render("♛", True, "Red"),(game_info["qpx"]*50+100 +5, game_info["qpy"]*50+100 -5))
+    #draw king
+    screen.blit(font.render("♚", True, "Blue"),(game_info["kpx"]*50+100 +5, game_info["kpy"]*50+100 -5))
+    #draw extra
+    screen.blit(font.render("♜", True, "Blue"),(game_info["epx"]*50+100 +5, game_info["epy"]*50+100 -5))
+
 
 
 def drawMovesText():
  
+    #display if king is en jaque 
+    jaque = "[EL REY ESTA EN JAQUE]" if game_info["en_jaque"] else "[EL REY NO ESTA EN JAQUE]"
+    screen.blit(font.render(jaque , True, "Black"),(10, 550))
 
- 
+
     #display queen info 
     queen_moves = ""
     for move in game_info["queen_moves"]:
         queen_moves += f'[{move["Cell"]}] '
-    screen.blit(font.render("Queen-["+game_info["q_cell"] + "]", True, "Black"),(10, 550+50))
+    screen.blit(font.render("Reina-["+game_info["q_cell"] + "]", True, "Black"),(10, 550+50))
     screen.blit(font_moves.render(queen_moves, True, "Black"),(10, 600+50))
     
-
+    #display king info
     king_moves = ""
     for move in game_info["king_moves"]:
         king_moves += f'[{move["Cell"]}] '
-    screen.blit(font.render("King-["+game_info["k_cell"] + "]", True, "Black"),(10, 550+100))
-    screen.blit(font_moves.render(queen_moves, True, "Black"),(10, 600+100))
+    screen.blit(font.render("Rey-["+game_info["k_cell"] + "]", True, "Black"),(10, 550+110))
+    screen.blit(font_moves.render(king_moves, True, "Black"),(10, 600+111))
 
+    #display estra moves
     extra_moves = ""
     for move in game_info["extra_moves"]:
         extra_moves += f'[{move["Cell"]}] '
-    screen.blit(font.render("Extra-["+game_info["e_cell"] + "]", True, "Black"),(10, 550+150))
-    screen.blit(font_moves.render(queen_moves, True, "Black"),(10, 600+150))
+    screen.blit(font.render("Torre-["+game_info["e_cell"] + "]", True, "Black"),(10, 550+170))
+    screen.blit(font_moves.render(extra_moves, True, "Black"),(10, 600+170))
     
 
 
 game_info = generator.generateGame()
-
 
 
 
@@ -89,13 +109,15 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 game_info = generator.generateGame()
+                
+
 
     
-    DrawBoard()
-    DrawPiece("♛", game_info["qpx"],game_info["qpy"], "Red")
-    DrawPiece("♚", game_info["kpx"],game_info["kpy"], "Blue")
-    DrawPiece("♜", game_info["epx"],game_info["epy"], "Blue")
+    drawBoard()
+    drawPieces()
+    drawMoves()
     drawMovesText()
+    
 
 
     pygame.display.update() 
