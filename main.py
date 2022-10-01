@@ -8,7 +8,7 @@ pygame.display.set_caption("Ajedrez")
 
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("segoeuisymbol", 40)
-
+font_moves = pygame.font.SysFont("segoeuisymbol", 10)
 
 
 def DrawBoard():
@@ -36,20 +36,35 @@ def DrawBoard():
        
     
 
-def DrawPiece(piece, x, y):
-    screen.blit(font.render(piece, True, "Red"),(x*50+100 +5, y*50+100 -5))
+def DrawPiece(piece, x, y, color):
+    
+
+    #draw moves 
+    screen.blit(font.render(piece, True, color),(x*50+100 +5, y*50+100 -5))
+
+    if piece == "♛":
+        for move in game_info["queen_moves"]:
+            pygame.draw.circle(screen, color, (move["x"]*50 +125, move["y"]*50 +125), 10)
 
 
-game_info = None
+def drawMovesText():
+ 
+    moves = "Queen:"
 
-def NewGame():
-    global game_info
-    game_info = generator.generateGame()
+    for i,move in enumerate(game_info["queen_moves"]):
+        
+        if move:
+            pass
+        moves += f'[{move["Cell"]}] '
+
+    screen.blit(font_moves.render(moves, True, "Black"),(10, 600))
     
-    
-    
-    
-NewGame()
+
+
+game_info = generator.generateGame()
+
+
+
 
 while True:
 
@@ -61,15 +76,15 @@ while True:
             exit()
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                NewGame()
+                game_info = generator.generateGame()
 
-
-
-    
     
     DrawBoard()
-    DrawPiece("♛", game_info["qpx"],game_info["qpx"])
-    
+    DrawPiece("♛", game_info["qpx"],game_info["qpy"], "Red")
+    DrawPiece("♚", game_info["kpx"],game_info["kpy"], "Blue")
+    DrawPiece("♜", game_info["epx"],game_info["epy"], "Blue")
+    drawMovesText()
+
 
     pygame.display.update() 
     clock.tick(60)
