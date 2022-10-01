@@ -30,17 +30,17 @@ def generateGame():
     extra_pos = {"x":rng_pos[2][1], "y":rng_pos[2][0]}
     extra_pos["Cell"] = chess_coordinates[extra_pos['y']][extra_pos['x']]
 
-    if True: #debug 
+    if False: #debug 
         print(f"Queen pos: {queen_pos['Cell']} ({queen_pos['x']},{queen_pos['y']})")
-        #print(f"King pos: {king_pos['Cell']} ({king_pos['x']},{king_pos['y']})")
-        #print(f"Extra pos: {extra_pos['Cell']} ({extra_pos['x']},{extra_pos['y']})")
+        print(f"King pos: {king_pos['Cell']} ({king_pos['x']},{king_pos['y']})")
+        print(f"Extra pos: {extra_pos['Cell']} ({extra_pos['x']},{extra_pos['y']})")
     
     #--------------------------------------------------------------------
 
 
     
 
-    def CalculateQueenPositions():
+    def calculateQueenPositions():
         positions = []
 
         #check top
@@ -124,32 +124,23 @@ def generateGame():
 
         checkBottomLeft(queen_pos["x"]+1,queen_pos["y"]+1)
 
-
-        
-
-
-
-
-
-        
-        
         return positions
 
-    posi = CalculateQueenPositions()
 
-
-    for i in range(len(posi)):
-        
-        print(posi[i]["x"],posi[i]["y"], posi[i]["Cell"])
 
     return {
         "qpx":queen_pos["x"], 
-        "qpy": queen_pos["y"],
+        "qpy":queen_pos["y"],
+        "q_cell":chess_coordinates[queen_pos['y']][queen_pos["x"]],
         "kpx":king_pos["x"], 
-        "kpy": king_pos["y"],
+        "kpy":king_pos["y"],
+        "k_cell":chess_coordinates[king_pos['y']][king_pos["x"]],
         "epx":extra_pos["x"], 
-        "epy": extra_pos["y"],
-        "queen_moves": CalculateQueenPositions()
+        "epy":extra_pos["y"],
+        "e_cell":chess_coordinates[extra_pos['y']][extra_pos["x"]],
+        "queen_moves": calculateQueenPositions(),
+        "king_moves": calculateQueenPositions(),
+        "extra_moves": calculateQueenPositions(),
         }
 
 

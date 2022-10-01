@@ -49,15 +49,27 @@ def DrawPiece(piece, x, y, color):
 
 def drawMovesText():
  
-    moves = "Queen:"
 
-    for i,move in enumerate(game_info["queen_moves"]):
-        
-        if move:
-            pass
-        moves += f'[{move["Cell"]}] '
+ 
+    #display queen info 
+    queen_moves = ""
+    for move in game_info["queen_moves"]:
+        queen_moves += f'[{move["Cell"]}] '
+    screen.blit(font.render("Queen-["+game_info["q_cell"] + "]", True, "Black"),(10, 550+50))
+    screen.blit(font_moves.render(queen_moves, True, "Black"),(10, 600+50))
+    
 
-    screen.blit(font_moves.render(moves, True, "Black"),(10, 600))
+    king_moves = ""
+    for move in game_info["king_moves"]:
+        king_moves += f'[{move["Cell"]}] '
+    screen.blit(font.render("King-["+game_info["k_cell"] + "]", True, "Black"),(10, 550+100))
+    screen.blit(font_moves.render(queen_moves, True, "Black"),(10, 600+100))
+
+    extra_moves = ""
+    for move in game_info["extra_moves"]:
+        extra_moves += f'[{move["Cell"]}] '
+    screen.blit(font.render("Extra-["+game_info["e_cell"] + "]", True, "Black"),(10, 550+150))
+    screen.blit(font_moves.render(queen_moves, True, "Black"),(10, 600+150))
     
 
 
