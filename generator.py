@@ -2,7 +2,6 @@
 import random
 
 
-
 chess_coordinates = (
     ("A8","B8","C8","D8","E8","F8","G8","H8"),
     ("A7","B7","C7","D7","E7","F7","G7","H7"),
@@ -46,7 +45,79 @@ def generateGame():
     #--------------------------------------------------------------------
 
 
-    
+    def calculateAllPossibleQueenPositions():
+        positions = []
+
+        #check top
+        for y in range(queen_pos["y"]-1,-1,-1):
+            #continue
+            cur_pos = (queen_pos["x"],y)
+            positions.append( {"x":queen_pos["x"],"y":y,"Cell":chess_coordinates[y][queen_pos["x"]] }  ) 
+
+
+        #check bottom
+        for y in range(queen_pos["y"]+1,8):
+            #continue
+            cur_pos = (queen_pos["x"],y)
+            positions.append( {"x":queen_pos["x"],"y":y,"Cell":chess_coordinates[y][queen_pos["x"]] }  ) 
+
+
+        #check right
+        for x in range(queen_pos["x"]+1,8):
+            #continue
+            cur_pos = (x,queen_pos["y"])
+            positions.append( {"x":x,"y":queen_pos["y"],"Cell":chess_coordinates[queen_pos['y']][x] }  ) 
+
+        
+        #check left 
+        for x in range(queen_pos["x"]-1,-1,-1):
+            #continue
+            cur_pos = (x,queen_pos["y"])
+            positions.append( {"x":x,"y":queen_pos["y"],"Cell":chess_coordinates[queen_pos['y']][x] }  ) 
+
+
+        #check top right 
+        def checkTopRight(x,y):
+            #return
+            if not (x+1 > 8 or y-1 < -1):
+                positions.append({"x":x,"y":y,"Cell":chess_coordinates[y][x] })
+                checkTopRight(x+1 , y-1)
+
+        checkTopRight(queen_pos["x"]+1,queen_pos["y"]-1)
+
+        
+        #check top left 
+        def checkTopLeft(x,y):
+            #return
+            #-1, -1
+            if not (x-1 < -1 or y-1 < -1):  # x-1 > 8 or y-1 < -1
+                positions.append({"x":x,"y":y,"Cell":chess_coordinates[y][x] })
+                checkTopLeft(x-1 , y-1)
+
+        checkTopLeft(queen_pos["x"]-1,queen_pos["y"]-1)
+        
+        
+
+        #check bottom left 
+        def checkBottomLeft(x,y):
+            #return
+            if not (x-1 < -1 or y+1 > 8):
+                positions.append({"x":x,"y":y,"Cell":chess_coordinates[y][x] })
+                checkBottomLeft(x-1 , y+1)
+
+
+        checkBottomLeft(queen_pos["x"]-1,queen_pos["y"]+1)
+
+        #check bottom Right 
+        def checkBottomLeft(x,y):
+            #return
+            if not (x+1 > 8 or y +1 > 8):
+                positions.append({"x":x,"y":y,"Cell":chess_coordinates[y][x] })
+                checkBottomLeft(x+1 , y+1)
+
+        checkBottomLeft(queen_pos["x"]+1,queen_pos["y"]+1)
+
+        return positions
 
     def calculateQueenPositions():
         positions = []
@@ -139,7 +210,7 @@ def generateGame():
         positions = []
         
         #get queen positions 
-        queen_positions = [pos["Cell"] for pos in calculateQueenPositions() ]
+        queen_positions = [pos["Cell"] for pos in calculateAllPossibleQueenPositions() ]
 
         #check if king is in jaque 
         global en_jaque
@@ -162,13 +233,65 @@ def generateGame():
                 cur_cell = chess_coordinates[y][x]
                 if cur_cell in queen_positions:
                     continue
+                if (x,y) == (extra_pos["x"],extra_pos["y"]):
+                    continue
 
 
                 positions.append( {"x":x,"y":y,"Cell":cur_cell }  ) 
                 
 
         return positions
+
+    def calculateExtraPositions():
+        positions = []
+
+        #check top
+        for y in range(extra_pos["y"]-1,-1,-1):
+            #continue
+            cur_pos = (extra_pos["x"],y)
+            if cur_pos == (king_pos["x"],king_pos["y"]):
+                break
+            positions.append( {"x":extra_pos["x"],"y":y,"Cell":chess_coordinates[y][extra_pos["x"]] }  ) 
+            #check queen coll
+            if cur_pos == (queen_pos["x"],queen_pos["y"]):
+                break
+
+
+        #check bottom
+        for y in range(extra_pos["y"]+1,8):
+            #continue
+            cur_pos = (extra_pos["x"],y)
+            if cur_pos == (king_pos["x"],king_pos["y"]):
+                break
+            positions.append( {"x":extra_pos["x"],"y":y,"Cell":chess_coordinates[y][extra_pos["x"]] }  ) 
+            #check queen coll
+            if cur_pos == (queen_pos["x"],queen_pos["y"]):
+                break#check king and extra collision 
+            
+
+        #check right
+        for x in range(extra_pos["x"]+1,8):
+            #continue
+            cur_pos = (x,extra_pos["y"])
+            if cur_pos == (king_pos["x"],king_pos["y"]):
+                break
+            positions.append( {"x":x,"y":extra_pos["y"],"Cell":chess_coordinates[extra_pos['y']][x] }  ) 
+            #check queen coll
+            if cur_pos == (queen_pos["x"],queen_pos["y"]):
+                break
         
+        #check left 
+        for x in range(extra_pos["x"]-1,-1,-1):
+            #continue
+            cur_pos = (x,extra_pos["y"])
+            if cur_pos == (king_pos["x"],king_pos["y"]):
+                break
+            positions.append( {"x":x,"y":extra_pos["y"],"Cell":chess_coordinates[extra_pos['y']][x] }  ) 
+            #check queen coll
+            if cur_pos == (queen_pos["x"],queen_pos["y"]):
+                break
+            
+        return positions
 
 
     return {
@@ -183,7 +306,7 @@ def generateGame():
         "e_cell":chess_coordinates[extra_pos['y']][extra_pos["x"]],
         "queen_moves": calculateQueenPositions(),
         "king_moves": calculateKingPositions(),
-        "extra_moves": calculateKingPositions(),
+        "extra_moves": calculateExtraPositions(),
         "en_jaque": en_jaque
         }
 

@@ -1,5 +1,4 @@
 import pygame
-import random
 import generator
 
 pygame.init()
@@ -9,6 +8,8 @@ pygame.display.set_caption("Ajedrez")
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("segoeuisymbol", 40)
 font_moves = pygame.font.SysFont("segoeuisymbol", 10)
+font_titles = pygame.font.SysFont("segoeuisymbol", 30)
+
 
 
 def drawBoard():
@@ -48,6 +49,7 @@ def drawMoves():
     for move in game_info["king_moves"]:
         pygame.draw.circle(screen, "Blue", (move["x"]*50 +125, move["y"]*50 +125), 8)
     
+
     for move in game_info["extra_moves"]:
         pygame.draw.circle(screen, "Blue", (move["x"]*50 +125, move["y"]*50 +125), 8)
 
@@ -66,6 +68,11 @@ def drawPieces():
 
 def drawMovesText():
  
+    #display game reset info
+    screen.blit(font_titles.render("[Pulsa ENTER para generar un juego nuevo]" , True, "Black"),(10, 0))
+
+
+    
     #display if king is en jaque 
     jaque = "[EL REY ESTA EN JAQUE]" if game_info["en_jaque"] else "[EL REY NO ESTA EN JAQUE]"
     screen.blit(font.render(jaque , True, "Black"),(10, 550))
