@@ -1,0 +1,1 @@
+Para ejecutar el programa correr "main.py" y asegurarse que "generator.py" este en el mismo folder que "main.py"
