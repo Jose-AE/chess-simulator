@@ -16,15 +16,21 @@ chess_coordinates = (
 #definir la variable de si el rey esta en jaque 
 en_jaque = False
 
+#definir la variable de si la torre puede hacer una jugada
+extra_jugada = False
 
 #funcion que genera el juego y regresa un diccionario con toda la informacion sobre el juego que se genero
 def generateGame():
 
+    #definir que en extra_jugada es la variable que esta afuera de la funcion
+    global extra_jugada 
+    #reiniciar la variable de extra_jugada a None cada ves que se genere un juego nuevo 
+    extra_jugada = False
+
     #definir que en en_jaque es la variable que esta afuera de la funcion
     global en_jaque 
-    #reiniciar la variable de _en_jaque a false cada ves que se genere un juego nuevo 
+    #reiniciar la variable de en_jaque a false cada ves que se genere un juego nuevo 
     en_jaque = False
-
 
     #generar posiciones aleatorias para cada pieza sin que se repitan
     rng_pos = []
@@ -257,6 +263,10 @@ def generateGame():
 
     #funcion que genera todas las posiciones possibles de la torre
     def calculateExtraPositions():
+        
+        #definir que la variable extra_jugada es la que esta fuera de la funcion
+        global extra_jugada
+        
         #crear lista en donde se van a ir agregando cada una de las posiciones a las que la torre se puede mover
         positions = []
 
@@ -269,6 +279,8 @@ def generateGame():
             positions.append( {"x":extra_pos["x"],"y":y,"Cell":chess_coordinates[y][extra_pos["x"]] }  ) 
             #si se agrega la posicion donde la reina esta romper el ciclo
             if cur_pos == (queen_pos["x"],queen_pos["y"]):
+                #si la reina esta en el camino de la torre hacer extra_jugada igual a verdadero 
+                extra_jugada = True
                 break
 
 
@@ -281,7 +293,9 @@ def generateGame():
             positions.append( {"x":extra_pos["x"],"y":y,"Cell":chess_coordinates[y][extra_pos["x"]] }  ) 
             #si se agrega la posicion donde la reina esta romper el ciclo
             if cur_pos == (queen_pos["x"],queen_pos["y"]):
-                break#check king and extra collision 
+                #si la reina esta en el camino de la torre hacer extra_jugada igual a verdadero 
+                extra_jugada = True
+                break
             
 
         #agregar celdas que esten a la derecha de la torre
@@ -293,6 +307,8 @@ def generateGame():
             positions.append( {"x":x,"y":extra_pos["y"],"Cell":chess_coordinates[extra_pos['y']][x] }  ) 
             #si se agrega la posicion donde la reina esta romper el ciclo
             if cur_pos == (queen_pos["x"],queen_pos["y"]):
+                #si la reina esta en el camino de la torre hacer extra_jugada igual a verdadero 
+                extra_jugada = True
                 break
         
         #agregar celdas que esten a la izquierda de la torre
@@ -304,6 +320,8 @@ def generateGame():
             positions.append( {"x":x,"y":extra_pos["y"],"Cell":chess_coordinates[extra_pos['y']][x] }  ) 
             #si se agrega la posicion donde la reina esta romper el ciclo
             if cur_pos == (queen_pos["x"],queen_pos["y"]):
+                #si la reina esta en el camino de la torre hacer extra_jugada igual a verdadero 
+                extra_jugada = True
                 break
         
 
@@ -325,7 +343,8 @@ def generateGame():
         "queen_moves": calculateQueenPositions(),
         "king_moves": calculateKingPositions(),
         "extra_moves": calculateExtraPositions(),
-        "en_jaque": en_jaque
+        "en_jaque": en_jaque,
+        "extra_jugada": extra_jugada
         }
 
 

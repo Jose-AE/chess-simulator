@@ -91,30 +91,34 @@ def drawMovesText():
     screen.blit(font_titles.render("[Pulsa ENTER para generar un juego nuevo]" , True, "Black"),(10, 0))
 
     #mostrar texto que dice si el rey esta en jaque
-    jaque = "[EL REY ESTA EN JAQUE]" if game_info["en_jaque"] else "[EL REY NO ESTA EN JAQUE]"
-    screen.blit(font.render(jaque , True, "Black"),(10, 550))
+    jaque = "[El rey esta en jaque]" if game_info["en_jaque"] else "[El rey no esta en jaque]"
+    screen.blit(font_titles.render(jaque , True, "Black"),(10, 550))
+
+    #mostrar texto que dice si la torre puede hacer una jugada
+    jugada = "[La torre no puede hacer una jugada]" if game_info["extra_jugada"] == False else f'[La Torre puede hacer una jugada-({game_info["q_cell"]})]'
+    screen.blit(font_titles.render(jugada , True, "Black"),(10, 580))
 
 
     #mostrar info de la reina 
     queen_moves = ""
     for move in game_info["queen_moves"]:
         queen_moves += f'[{move["Cell"]}] '
-    screen.blit(font.render("Reina-["+game_info["q_cell"] + "]", True, "Black"),(10, 550+50))
-    screen.blit(font_moves.render(queen_moves, True, "Black"),(10, 600+50))
+    screen.blit(font.render("Reina-["+game_info["q_cell"] + "]", True, "Black"),(10, 550+60))
+    screen.blit(font_moves.render(queen_moves, True, "Black"),(10, 600+60))
 
     #mostrar info del rey 
     king_moves = ""
     for move in game_info["king_moves"]:
         king_moves += f'[{move["Cell"]}] '
-    screen.blit(font.render("Rey-["+game_info["k_cell"] + "]", True, "Black"),(10, 550+110))
-    screen.blit(font_moves.render(king_moves, True, "Black"),(10, 600+111))
+    screen.blit(font.render("Rey-["+game_info["k_cell"] + "]", True, "Black"),(10, 550+120))
+    screen.blit(font_moves.render(king_moves, True, "Black"),(10, 600+122))
 
     #mostrar info de la torre  
     extra_moves = ""
     for move in game_info["extra_moves"]:
         extra_moves += f'[{move["Cell"]}] '
-    screen.blit(font.render("Torre-["+game_info["e_cell"] + "]", True, "Black"),(10, 550+170))
-    screen.blit(font_moves.render(extra_moves, True, "Black"),(10, 600+170))
+    screen.blit(font.render("Torre-["+game_info["e_cell"] + "]", True, "Black"),(10, 550+180))
+    screen.blit(font_moves.render(extra_moves, True, "Black"),(10, 600+180))
     
 
 #generar el estado del juego usando el modulo "generator" que cree y salvarlo en una variable (la funcion regresa un diccionario com toda la info del juego)
