@@ -91,11 +91,11 @@ def drawMovesText():
     screen.blit(font_titles.render("[Pulsa ENTER para generar un juego nuevo]" , True, "Black"),(10, 0))
 
     #mostrar texto que dice si el rey esta en jaque
-    jaque = "[El rey esta en jaque]" if game_info["en_jaque"] else "[El rey no esta en jaque]"
+    jaque = "[El Rey esta en jaque]" if game_info["en_jaque"] else "[El Rey no esta en jaque]"
     screen.blit(font_titles.render(jaque , True, "Black"),(10, 550))
 
     #mostrar texto que dice si la torre puede hacer una jugada
-    jugada = "[La torre no puede hacer una jugada]" if game_info["extra_jugada"] == False else f'[La Torre puede hacer una jugada-({game_info["q_cell"]})]'
+    jugada = "[La Torre no puede hacer una jugada]" if game_info["extra_jugada"] == False else f'[La Torre puede hacer una jugada-({game_info["q_cell"]})]'
     screen.blit(font_titles.render(jugada , True, "Black"),(10, 580))
 
 
