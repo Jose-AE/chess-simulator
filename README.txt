@@ -1,1 +1,3 @@
-Para ejecutar el programa correr "main.py" y asegurarse que "generator.py" este en el mismo folder que "main.py"
+-Para ejecutar el programa correr "main.py"
+-Asegurarse que "generator.py" este en el mismo folder que "main.py"
+-Para mostrar el programa en la consola(sin GUI) meterse al scirpt "main.py" y poner que "USE_UI" sea falso 

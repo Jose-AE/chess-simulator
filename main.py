@@ -1,8 +1,8 @@
 import pygame 
 import generator
 
-
-USE_UI = True #set to False si quiere que el trablero y movimientos se muestren en la consola 
+#set to False si quiere que el trablero y movimientos se muestren en la consola en vez de en un GUI
+USE_UI = True 
 
 
 #generar el estado del juego usando el modulo "generator" que cree y salvarlo en una variable (la funcion regresa un diccionario com toda la info del juego)
