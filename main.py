@@ -1,4 +1,3 @@
-import pygame 
 import generator
 
 #set to False si quiere que el trablero y movimientos se muestren en la consola en vez de en un GUI
@@ -11,6 +10,7 @@ game_info = generator.generateGame()
 
 if USE_UI:
 
+    import pygame 
     #iniciar pygame 
     pygame.init()
 
